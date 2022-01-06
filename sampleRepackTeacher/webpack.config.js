@@ -6,6 +6,8 @@ const {ModuleFederationPlugin} = require('webpack').container;
 
 const STANDALONE = Boolean(process.env.STANDALONE);
 
+console.log(path.join(__dirname, 'build', "android", 'remote'))
+
 /**
  * More documentation, installation, usage, motivation and differences with Metro is available at:
  * https://github.com/callstack/repack/blob/main/README.md
@@ -77,6 +79,7 @@ module.exports = {
     entry,
   ],
   resolve: {
+    extensions: [".ts", ".js", ".tsx"],
     /**
      * `getResolveOptions` returns additional resolution configuration for React Native.
      * If it's removed, you won't be able to use `<file>.<platform>.<ext>` (eg: `file.ios.js`)
@@ -233,6 +236,8 @@ module.exports = {
     new ReactNative.OutputPlugin({
       platform,
       devServerEnabled: devServer.enabled,
+      localChunks: [/Async/],
+      remoteChunksOutput: path.join(__dirname, 'build', platform, 'remote'),
     }),
 
     /**
